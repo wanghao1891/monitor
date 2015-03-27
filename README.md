@@ -1,2 +1,2 @@
-# monitor
-Monitor for multicast stream of ts over udp.
+# Monitor
+This project is for monitoring the multicast streams of ts over udp.

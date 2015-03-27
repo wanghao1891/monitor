@@ -1,0 +1,25 @@
+{
+  "name": "monitor",
+  "version": "0.0.1",
+  "description": "This project is for monitoring the multicast streams of ts over udp.",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wanghao1891/monitor.git"
+  },
+  "keywords": [
+    "monitor"
+  ],
+  "author": "wanghao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wanghao1891/monitor/issues"
+  },
+  "homepage": "https://github.com/wanghao1891/monitor",
+  "dependencies": {
+    "express": "^4.12.3"
+  }
+}

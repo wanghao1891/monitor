@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var request = require('request');
+var parseString = require('xml2js').parseString;
 
 server.listen(8080);
 
@@ -17,7 +18,11 @@ io.on('connection', function (socket) {
     request('http://172.17.128.81/channel/cns/1000000000000002/query', function (error, response, body) {
 	if (!error && response.statusCode == 200) {
 	    console.log(body) // Show the HTML for the Google homepage.
-	    socket.emit('news', { hello: body });
+	    parseString(body, function (err, result) {
+		console.dir(result);
+		console.log(result.lms.channel);
+		socket.emit('news', { hello: result.lms.channel[0].stat[0] });
+	    });
 	}
     })
 //    socket.emit('news', { hello: 'world' });

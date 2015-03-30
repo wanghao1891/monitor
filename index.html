@@ -1,8 +1,25 @@
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io('http://192.168.56.21');
-  socket.on('news', function (data) {
-  console.log(data);
-  socket.emit('my other event', { my: 'data' });
-  });
-</script>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+  </head>
+  <body>
+    <a href="http://jquery.com/">jQuery</a>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="jquery/dist/jquery.js"></script>
+    <script>
+      var socket = io('http://192.168.56.21:8080');
+      socket.on('news', function (data) {
+      console.log(data);
+      socket.emit('my other event', { my: 'data' });
+      });
+
+      $( document ).ready(function() {
+      $( "a" ).click(function( event ) {
+      alert( "Thanks for visiting!" );
+      });
+      });
+    </script>
+  </body>
+</html>

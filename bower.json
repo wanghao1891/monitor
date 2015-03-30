@@ -1,0 +1,18 @@
+{
+  "name": "monitor",
+  "version": "0.0.1",
+  "homepage": "https://github.com/wanghao1891/monitor",
+  "authors": [
+    "Wanghao <wanghao1891@126.com>"
+  ],
+  "description": "This project is for monitoring the multicast streams of ts over udp.",
+  "main": "index.html",
+  "keywords": [
+    "monitor"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.3"
+  }
+}

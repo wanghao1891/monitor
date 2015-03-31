@@ -2,24 +2,28 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Demo</title>
-  </head>
-  <body>
-    <a href="http://jquery.com/">jQuery</a>
+    <title>The Monitor of the Live Channel</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="/socket.io/socket.io.js"></script>
     <script src="jquery/dist/jquery.js"></script>
-    <script>
-      var socket = io('http://192.168.56.21:8080');
-      socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' });
-      });
-
-      $( document ).ready(function() {
-      $( "a" ).click(function( event ) {
-      alert( "Thanks for visiting!" );
-      });
-      });
-    </script>
+    <script src="js/index.js"></script>
+  </head>
+  <body>
+    <div id="add-live-channel-div" class="top-left">
+      <a onclick="showAddLiveChannelDialog()">+</a>
+      <div id="add-live-channel-dialog" class="add-live-channel">
+	Name:
+	<input id="live-channel-name" type="text"></input>
+	Bitrate:
+	<input id="live-channel-bitrate" type="text"></input>
+      </div>
+    </div>
+    <div id="search-live-channel-div" class="top-right">
+      <input id="search-live-channel-text" type="text" value="Keyword">
+      </input>
+    </div>
+    <div id="live-channel-list-div" class="center">
+      Live Channel List
+    </div>
   </body>
 </html>

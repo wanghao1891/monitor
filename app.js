@@ -14,6 +14,13 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.post('/channel', function (req, res) {
+    console.log("req", req);
+    console.log("res", res);
+    console.log(req.body);
+    res.send({ message: 'hey' });
+});
+
 io.on('connection', function (socket) {
     request('http://172.17.128.81/channel/cns/1000000000000002/query', function (error, response, body) {
 	if (!error && response.statusCode == 200) {

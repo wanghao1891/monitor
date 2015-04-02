@@ -2,12 +2,16 @@ function showAddLiveChannelDialog() {
     $("#add-live-channel-dialog").toggle();
 }
 
+function addLiveChannelTmp() {
+    $.post("/channel", {number: 1});
+}
+
 function addLiveChannel() {
     // Using the core $.ajax() method
     $.ajax({
 	
 	// The URL for the request
-	url: "http://192.168.56.21:8080/channel",
+	url: "/channel",
 	
 	// The data to send (will be converted to a query string)
 	data: {

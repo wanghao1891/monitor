@@ -15,7 +15,8 @@ function addLiveChannel() {
 	
 	// The data to send (will be converted to a query string)
 	data: {
-            name: "channel-001"
+            name: $("#live-channel-name").val(),
+	    bitrate: $("#live-channel-bitrate").val()
 	},
 	
 	// Whether this is a POST or GET request

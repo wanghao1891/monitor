@@ -6,6 +6,17 @@ var request = require('request');
 var parseString = require('xml2js').parseString;
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var mongoose = require('mongoose');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/monitor');
+
+var Schema = mongoose.Schema;
+var liveChannelSchema = new Schema({
+    name: String,
+    bitrate: String
+});
+var LiveChannel = mongoose.model('LiveChannel', liveChannelSchema);
 
 server.listen(8080);
 
@@ -20,16 +31,31 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/channel', function (req, res) {
+app.get('/channels', function (req, res) {
     console.log("req", req);
 
-    res.send({message: 'hey'});
+    LiveChannel.find(function (err, liveChannels) {
+	if (err) {
+	    return console.error(err);
+	}
+
+	res.send(liveChannels);
+    });
+
+//    res.send({message: 'hey'});
 });
 
 app.post('/channel', function (req, res) {
-    console.log("req", req);
+//    console.log("req", req);
 //    console.log("res", res);
+    
     console.log(req.body);
+    var _channel = new LiveChannel(req.body);//{name:'001', bitrate:'227.0.0.1:10000'});
+    _channel.save(function (err) {
+	if (err) // ...
+	    console.log('meow');
+    });
+    console.log(typeof req.body);
     res.send({ message: 'hey' });
 });
 
@@ -50,7 +76,7 @@ io.on('connection', function (socket) {
     });
 });
 
-var mongoose = require('mongoose');
+/*var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 
 var Cat = mongoose.model('Cat', { name: String });
@@ -59,4 +85,4 @@ var kitty = new Cat({ name: 'Zildjian' });
 kitty.save(function (err) {
   if (err) // ...
   console.log('meow');
-});
+});*/

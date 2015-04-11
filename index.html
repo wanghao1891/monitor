@@ -7,6 +7,13 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="jquery/dist/jquery.js"></script>
     <script src="js/index.js"></script>
+    <script>
+      // A $( document ).ready() block.
+      $( document ).ready(function() {
+      console.log( "ready!" );
+      getLiveChannels();
+      });
+    </script>
   </head>
   <body>
     <div id="add-live-channel-div" class="top-left">

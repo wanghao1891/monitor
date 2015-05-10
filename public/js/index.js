@@ -114,9 +114,9 @@ function connectSocketIO() {
 	var name = data.channel;
 	var status = data.status;
 
-	if(status === "Good" && (name === "1000000000000051" || name === "1000000000000036")) {
-	    status = "Bad";
-	}
+//	if(status === "Good" && (name === "1000000000000051" || name === "1000000000000036")) {
+//	    status = "Bad";
+//	}
 	
 	var color = "#2CB853";
 	

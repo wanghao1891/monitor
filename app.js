@@ -65,19 +65,31 @@ app.post('/channel', function (req, res) {
     res.send({ message: 'hey' });
 });
 
+function notifyClient(channel, sockets, status) {
+    
+    if(sockets.length > 0) {
+	sockets.forEach(function(socket){
+	    socket.emit('news', {
+		channel:channel,
+		status: status
+	    });
+	});
+    }
+}
+
 function queryChannel(socket) {
 
 //    var channels = [1000000000000001];
     var isSocketIOConnected = false;
     var channels = config.channels;
-    var socket = null;
+    var sockets = [];
 
     console.log(channels);
 
     // 订阅
     emitter.on("connection", function (key, value) {
-	console.log(queryChannel, "client connect the server.", value);
-	socket = value;
+//	console.log(queryChannel, "client connect the server.", value);
+	sockets.push(value);
     });
 
     setInterval(function(){
@@ -92,15 +104,11 @@ function queryChannel(socket) {
 //		    console.log(body) // Show the HTML for the Google homepage.
 		    parseString(body, function (err, result) {
 //			console.dir(result);
-			console.log(queryChannel, result.lms.channel[0].stat[0]);
 
-			console.log(queryChannel, socket, !socket);
-			if(socket) {
-			    socket.emit('news', {
-				channel:channel,
-				status: result.lms.channel[0].stat[0]
-			    });
-			}
+			var status = result.lms.channel[0].stat[0];
+			console.log(queryChannel, status);
+
+			notifyClient(channel, sockets, status);
 		    });
 		}
 	    });
@@ -113,7 +121,7 @@ queryChannel();
 io.on('connection', function (socket) {
 
     // 发布
-    console.log("socket.io", socket);
+    //console.log("socket.io", socket);
     emitter.emit('connection', "socket", socket);
 
     socket.on('my other event', function (data) {

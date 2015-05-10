@@ -65,7 +65,7 @@ app.post('/channel', function (req, res) {
 
 function queryChannel(socket) {
 
-    var channels = config.channels;
+    var channels = [1000000000000001];//config.channels;
 
     console.log(channels);
 
@@ -73,7 +73,7 @@ function queryChannel(socket) {
 
 	channels.forEach(function(channel){
 	   
-	    var url = "http://172.17.128.93/channel/cns/" + channel + "/query";
+	    var url = config.trial + channel + "/query";
 	    
 	    console.log("request", url);
 	    request(url, function (error, response, body) {

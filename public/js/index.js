@@ -110,6 +110,18 @@ function addLiveChannel() {
 function connectSocketIO() {
     var socket = io('http://192.168.56.21:8080');
     socket.on('news', function (data) {
+
+	var name = data.channel;
+	var status = data.status;
+	
+	var color = "#2CB853";
+	
+	if(status === "Bad") {
+	    color = "#B82C41";
+	}
+
+	$("#" + name).css("background-color", color);
+
 	console.log(data);
 	socket.emit('my other event', { my: 'data' });
     });

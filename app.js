@@ -11,6 +11,10 @@ var mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/monitor');
 
+//catch the error of connneting mongodb.
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
 var Schema = mongoose.Schema;
 var liveChannelSchema = new Schema({
     name: String,
@@ -32,7 +36,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/channels', function (req, res) {
-    console.log("req", req);
+    //console.log("req", req);
 
     LiveChannel.find(function (err, liveChannels) {
 	if (err) {
@@ -60,29 +64,33 @@ app.post('/channel', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-    request('http://172.17.128.81/channel/cns/1000000000000002/query', function (error, response, body) {
-	if (!error && response.statusCode == 200) {
-	    console.log(body) // Show the HTML for the Google homepage.
-	    parseString(body, function (err, result) {
-		console.dir(result);
-		console.log(result.lms.channel);
-		socket.emit('news', { hello: result.lms.channel[0].stat[0] });
+
+    var channels = ["1000000000000001", "1000000000000002"];
+
+    setInterval(function(){
+
+	channels.forEach(function(channel){
+	   
+	    var url = "http://192.168.56.13:9480/channel/trial/" + channel + "/query";
+	    
+	    console.log("request", url);
+	    request(url, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+		    console.log(body) // Show the HTML for the Google homepage.
+		    parseString(body, function (err, result) {
+			console.dir(result);
+			console.log(result.lms.channel);
+			socket.emit('news', {
+			    channel:channel,
+			    status: result.lms.channel[0].stat[0]
+			});
+		    });
+		}
 	    });
-	}
-    })
-//    socket.emit('news', { hello: 'world' });
+	});
+    },10000);
+
     socket.on('my other event', function (data) {
 	console.log(data);
     });
 });
-
-/*var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
-
-var Cat = mongoose.model('Cat', { name: String });
-
-var kitty = new Cat({ name: 'Zildjian' });
-kitty.save(function (err) {
-  if (err) // ...
-  console.log('meow');
-});*/

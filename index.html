@@ -12,6 +12,7 @@
       $( document ).ready(function() {
       console.log( "ready!" );
       getLiveChannels();
+      connectSocketIO();
       });
     </script>
   </head>
@@ -26,12 +27,24 @@
 	<input type="button" value="Add" onclick="addLiveChannel()">
       </div>
     </div>
+
     <div id="search-live-channel-div" class="top-right">
       <input id="search-live-channel-text" type="text" value="Keyword">
       </input>
     </div>
-    <div id="live-channel-list-div" class="center">
-      Live Channel List
+
+    <div id="center" class="center">
+      <div id="menu-div" class="center-left">
+監控首頁<br>
+事件檢視/查詢<br>
+監控畫面設定	
+      </div>
+
+      <div id="content-div" class="center-right">
+	<div id="live-channel-list-div" class="">
+監控首頁 
+	</div>
+      </div>
     </div>
   </body>
 </html>

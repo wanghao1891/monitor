@@ -2,6 +2,19 @@ function showAddLiveChannelDialog() {
     $("#add-live-channel-dialog").toggle();
 }
 
+function showChannels(json) {
+    console.log("json: " + json);
+    var _list = "監控首頁<br>";
+    
+    json.forEach(function(e){
+	_list += "<div id='"+ e.name + "' class='live-channel'>" + e.name + "</div>";
+    });
+
+    console.log(_list);
+
+    $("#live-channel-list-div").html(_list);
+}
+
 function getLiveChannels() {
     // Using the core $.ajax() method
     $.ajax({
@@ -24,18 +37,9 @@ function getLiveChannels() {
 	// Code to run if the request succeeds;
 	// the response is passed to the function
 	success: function( json ) {
-	    console.log("json: " + json);
-	    var _list = "Live Channel List<ol reversed>";
 	    
-	    json.forEach(function(e){
-		_list += "<li>" + e.name + "</li>";
-	    });
+	    showChannels(json);
 
-	    _list += "</ol>";
-
-	    console.log(_list);
-
-	    $("#live-channel-list-div").html(_list);
 //            $( "<h1>" ).text( json.title ).appendTo( "body" );
 //            $( "<div class=\"content\">").html( json.html ).appendTo( "body" );
 	},

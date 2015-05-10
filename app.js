@@ -7,7 +7,7 @@ var parseString = require('xml2js').parseString;
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var mongoose = require('mongoose');
-var mongoose = require('mongoose');
+var config = require("./config.js").config;
 
 mongoose.connect('mongodb://localhost/monitor');
 
@@ -63,23 +63,25 @@ app.post('/channel', function (req, res) {
     res.send({ message: 'hey' });
 });
 
-io.on('connection', function (socket) {
+function queryChannel(socket) {
 
-    var channels = ["1000000000000001", "1000000000000002"];
+    var channels = config.channels;
+
+    console.log(channels);
 
     setInterval(function(){
 
 	channels.forEach(function(channel){
 	   
-	    var url = "http://192.168.56.13:9480/channel/trial/" + channel + "/query";
+	    var url = "http://172.17.128.93/channel/cns/" + channel + "/query";
 	    
 	    console.log("request", url);
 	    request(url, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
 		    console.log(body) // Show the HTML for the Google homepage.
 		    parseString(body, function (err, result) {
-			console.dir(result);
-			console.log(result.lms.channel);
+//			console.dir(result);
+//			console.log(result.lms.channel);
 			socket.emit('news', {
 			    channel:channel,
 			    status: result.lms.channel[0].stat[0]
@@ -89,8 +91,19 @@ io.on('connection', function (socket) {
 	    });
 	});
     },10000);
+}
+
+io.on('connection', function (socket) {
+
+    queryChannel(socket);
 
     socket.on('my other event', function (data) {
 	console.log(data);
     });
+});
+
+
+process.on('uncaughtException', function (err) {
+    console.error((new Date).toString() + " uncaughtException " + err + " " + err.stack +  "\n\n");
+    //process.exit(1);
 });

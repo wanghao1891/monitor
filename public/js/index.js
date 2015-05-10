@@ -113,6 +113,10 @@ function connectSocketIO() {
 
 	var name = data.channel;
 	var status = data.status;
+
+	if(status === "Good" && (name === "1000000000000051" || name === "1000000000000036")) {
+	    status = "Bad";
+	}
 	
 	var color = "#2CB853";
 	
@@ -122,7 +126,7 @@ function connectSocketIO() {
 
 	$("#" + name).css("background-color", color);
 
-	console.log(data);
+	console.log(data, Date.now());
 	socket.emit('my other event', { my: 'data' });
     });
 }

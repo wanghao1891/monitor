@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var mongoose = require('mongoose');
 var config = require("./config.js").config;
+var events = require("events");
+var emitter = new events.EventEmitter();
 
 mongoose.connect('mongodb://localhost/monitor');
 
@@ -65,27 +67,40 @@ app.post('/channel', function (req, res) {
 
 function queryChannel(socket) {
 
-    var channels = [1000000000000001];//config.channels;
+//    var channels = [1000000000000001];
+    var isSocketIOConnected = false;
+    var channels = config.channels;
+    var socket = null;
 
     console.log(channels);
+
+    // 订阅
+    emitter.on("connection", function (key, value) {
+	console.log(queryChannel, "client connect the server.", value);
+	socket = value;
+    });
 
     setInterval(function(){
 
 	channels.forEach(function(channel){
 	   
-	    var url = config.trial + channel + "/query";
+	    var url = config.cns + channel + "/query";
 	    
-	    console.log("request", url);
+	    console.log(queryChannel, url);
 	    request(url, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
-		    console.log(body) // Show the HTML for the Google homepage.
+//		    console.log(body) // Show the HTML for the Google homepage.
 		    parseString(body, function (err, result) {
 //			console.dir(result);
-//			console.log(result.lms.channel);
-			socket.emit('news', {
-			    channel:channel,
-			    status: result.lms.channel[0].stat[0]
-			});
+			console.log(queryChannel, result.lms.channel[0].stat[0]);
+
+			console.log(queryChannel, socket, !socket);
+			if(socket) {
+			    socket.emit('news', {
+				channel:channel,
+				status: result.lms.channel[0].stat[0]
+			    });
+			}
 		    });
 		}
 	    });
@@ -93,9 +108,13 @@ function queryChannel(socket) {
     },10000);
 }
 
+queryChannel();
+
 io.on('connection', function (socket) {
 
-    queryChannel(socket);
+    // 发布
+    console.log("socket.io", socket);
+    emitter.emit('connection', "socket", socket);
 
     socket.on('my other event', function (data) {
 	console.log(data);

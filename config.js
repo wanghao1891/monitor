@@ -1,6 +1,6 @@
 var config = {
     cns: "http://172.17.128.93/channel/cns/",
-    trial: "http://192.168.56.13:9480/channel/trial/",
+    trial: "http://192.168.56.3:80/channel/trial/",
     channels: [
 	"1000000000000005",
 	"1000000000000007",

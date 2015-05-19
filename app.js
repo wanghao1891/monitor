@@ -84,7 +84,15 @@ function queryChannel(socket) {
     var channels = config.channels;
     var sockets = [];
 
-    console.log(channels);
+    LiveChannel.find(function (err, liveChannels) {
+	if (err) {
+	    return console.error(err);
+	}
+
+	emitter.emit("channels", "liveChannels", liveChannels);
+    });
+
+    //console.log(channels);
 
     // 订阅
     emitter.on("connection", function (key, value) {
@@ -92,7 +100,35 @@ function queryChannel(socket) {
 	sockets.push(value);
     });
 
-    setInterval(function(){
+    emitter.on("channels", function(key, value) {
+
+	setInterval(function(){
+
+	    value.forEach(function(channel){
+		
+		var url = config.trial + channel.name + "/query";
+		
+		console.log(queryChannel, url);
+		request(url, function (error, response, body) {
+		    if (!error && response.statusCode == 200) {
+			//		    console.log(body) // Show the HTML for the Google homepage.
+			parseString(body, function (err, result) {
+			    console.dir(result);
+			    var status = "Bad";
+			    if(!!result && !!result.lms && !!result.lms.channel[0]) {
+				var status = result.lms.channel[0].stat[0];
+				console.log(queryChannel, status);
+			    }
+
+			    notifyClient(channel.name, sockets, status);
+			});
+		    }
+		});
+	    });
+	},10000);
+    });
+
+/*    setInterval(function(){
 
 	channels.forEach(function(channel){
 	   
@@ -113,7 +149,7 @@ function queryChannel(socket) {
 		}
 	    });
 	});
-    },10000);
+    },10000);*/
 }
 
 queryChannel();
@@ -121,7 +157,7 @@ queryChannel();
 io.on('connection', function (socket) {
 
     // 发布
-    //console.log("socket.io", socket);
+//    console.log("socket.io", socket);
     emitter.emit('connection', "socket", socket);
 
     socket.on('my other event', function (data) {

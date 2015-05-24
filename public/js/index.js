@@ -4,7 +4,7 @@ function showAddLiveChannelDialog() {
 
 function showChannels(json) {
     console.log("json: " + json);
-    var _list = "監控首頁<br>";
+    var _list = "";
     
     json.forEach(function(e){
 	_list += "<div id='"+ e.name + "' class='live-channel'>" + e.name + "</div>";

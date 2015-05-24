@@ -1,6 +1,8 @@
 var config = {
     cns: "http://172.17.128.93/channel/cns/",
     trial: "http://192.168.56.3:80/channel/trial/",
+    dongfong: "http://116.50.32.212:8080/channel/dongfong/",
+    port: 80,
     channels: [
 	"1000000000000005",
 	"1000000000000007",

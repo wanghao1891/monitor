@@ -10,6 +10,11 @@ var mongoose = require('mongoose');
 var config = require("./config.js").config;
 var events = require("events");
 var emitter = new events.EventEmitter();
+var port = config.port;
+
+//console.log(process.argv[2]);
+
+var operator = process.argv[2] || "trial";
 
 mongoose.connect('mongodb://localhost/monitor');
 
@@ -24,7 +29,7 @@ var liveChannelSchema = new Schema({
 });
 var LiveChannel = mongoose.model('LiveChannel', liveChannelSchema);
 
-server.listen(8080);
+server.listen(port);
 
 app.use(express.static('public'));
 app.use(express.static('bower_components'));
@@ -106,7 +111,7 @@ function queryChannel(socket) {
 
 	    value.forEach(function(channel){
 		
-		var url = config.trial + channel.name + "/query";
+		var url = config[operator] + channel.name + "/query";
 		
 		console.log(queryChannel, url);
 		request(url, function (error, response, body) {
@@ -127,29 +132,6 @@ function queryChannel(socket) {
 	    });
 	},10000);
     });
-
-/*    setInterval(function(){
-
-	channels.forEach(function(channel){
-	   
-	    var url = config.cns + channel + "/query";
-	    
-	    console.log(queryChannel, url);
-	    request(url, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
-//		    console.log(body) // Show the HTML for the Google homepage.
-		    parseString(body, function (err, result) {
-//			console.dir(result);
-
-			var status = result.lms.channel[0].stat[0];
-			console.log(queryChannel, status);
-
-			notifyClient(channel, sockets, status);
-		    });
-		}
-	    });
-	});
-    },10000);*/
 }
 
 queryChannel();

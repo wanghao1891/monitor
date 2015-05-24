@@ -108,7 +108,13 @@ function addLiveChannel() {
 }
 
 function connectSocketIO() {
-    var socket = io('http://192.168.56.21:8080');
+    console.log(window.location.host);
+    console.log(document.domain);
+    console.log(window.location.href);
+
+    var url = window.location.href;
+
+    var socket = io(url);
     socket.on('news', function (data) {
 
 	var name = data.channel;

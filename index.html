@@ -17,6 +17,7 @@
     </script>
   </head>
   <body>
+    <!--
     <div id="add-live-channel-div" class="top-left">
       <a onclick="showAddLiveChannelDialog()">+</a>
       <div id="add-live-channel-dialog" class="add-live-channel">
@@ -27,7 +28,8 @@
 	<input type="button" value="Add" onclick="addLiveChannel()">
       </div>
     </div>
-
+    -->
+    
     <div id="search-live-channel-div" class="top-right">
       <input id="search-live-channel-text" type="text" value="Keyword">
       </input>
@@ -35,7 +37,9 @@
 
     <div id="center" class="center">
       <div id="menu-div" class="center-left">
-	<div id="monitor-index" class="menu-left"><a onclick="getLiveChannels()">監控首頁</a></div>
+	<div id="monitor-index" class="menu-left">
+	  <a onclick="getLiveChannels()">監控首頁</a>
+	</div>
 	<div class="menu-left">事件檢視/查詢</div>
 	<div class="menu-left">監控畫面設定</div>
       </div>
@@ -44,9 +48,21 @@
 
       <div id="content-div" class="center-right">
 	<div class="title-right">監控首頁</div>
+
 	<div id="live-channel-list-div" class="">
 	</div>
-	<div id="add" class="add">+</div>
+
+	<div id="add" class="add">
+	  <a onclick="showAddLiveChannelDialog(event)">+</a>
+
+	  <div id="add-live-channel-dialog" class="add-live-channel">
+	    Name:
+	    <input id="live-channel-name" type="text"></input>
+	    Bitrate:
+	    <input id="live-channel-bitrate" type="text"></input>
+	    <input type="button" value="Add" onclick="addLiveChannel()">
+	  </div>
+	</div>
       </div>
     </div>
   </body>

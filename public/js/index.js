@@ -1,5 +1,13 @@
-function showAddLiveChannelDialog() {
-    $("#add-live-channel-dialog").toggle();
+function showAddLiveChannelDialog(event) {
+
+    console.log(event);
+    
+    var dialog = $("#add-live-channel-dialog");
+
+    dialog.toggle();
+
+    dialog.css("left", event.x + 10);
+    dialog.css("top", event.y + 10);
 }
 
 function showChannels(json) {
@@ -87,6 +95,8 @@ function addLiveChannel() {
 	// the response is passed to the function
 	success: function( json ) {
 	    console.log("json: " + json);
+
+	    getLiveChannels();
 //            $( "<h1>" ).text( json.title ).appendTo( "body" );
 //            $( "<div class=\"content\">").html( json.html ).appendTo( "body" );
 	},
@@ -105,6 +115,8 @@ function addLiveChannel() {
             //alert( "The request is complete!" );
 	}
     });
+
+    $("#add-live-channel-dialog").toggle();
 }
 
 function connectSocketIO() {

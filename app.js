@@ -31,6 +31,8 @@ var LiveChannel = mongoose.model('LiveChannel', liveChannelSchema);
 
 server.listen(port);
 
+console.log("Server running at http://0.0.0.0/");
+
 app.use(express.static('public'));
 app.use(express.static('bower_components'));
 
@@ -61,6 +63,21 @@ app.post('/channel', function (req, res) {
 //    console.log("res", res);
     
     console.log(req.body);
+
+    var channelName = req.body.name;
+    var bitrate = req.body.bitrate;
+    var url = "http://192.168.56.3:8080/channel/trial/" + channelName  + "/start?source=udp://" + bitrate  + ":864000&recording=no&record_d=/tmp"
+    console.log(url);
+
+    request(url, function (error, response, body) {
+	if (!error && response.statusCode == 200) {
+	    //		    console.log(body) // Show the HTML for the Google homepage.
+	    parseString(body, function (err, result) {
+		console.dir(result);
+	    });
+	}
+    });
+
     var _channel = new LiveChannel(req.body);//{name:'001', bitrate:'227.0.0.1:10000'});
     _channel.save(function (err) {
 	if (err) // ...
@@ -82,20 +99,51 @@ function notifyClient(channel, sockets, status) {
     }
 }
 
+function sendQueringRequest(channels, sockets) {
+//    setInterval(function(){
+
+	channels.forEach(function(channel){
+	    
+	    var url = config[operator] + channel.name + "/query";
+	    
+	    console.log(queryChannel, url);
+	    request(url, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+		    //		    console.log(body) // Show the HTML for the Google homepage.
+		    parseString(body, function (err, result) {
+			console.dir(result);
+			var status = "Bad";
+			if(!!result && !!result.lms && !!result.lms.channel[0]) {
+			    var status = result.lms.channel[0].stat[0];
+			    console.log(queryChannel, status);
+			}
+
+			notifyClient(channel.name, sockets, status);
+		    });
+		}
+	    });
+	});
+//    },10000);
+}
+
 function queryChannel(socket) {
 
 //    var channels = [1000000000000001];
     var isSocketIOConnected = false;
-    var channels = config.channels;
+    //var channels = config.channels;
     var sockets = [];
 
-    LiveChannel.find(function (err, liveChannels) {
-	if (err) {
-	    return console.error(err);
-	}
+    setInterval(function(){
+	LiveChannel.find(function (err, channels) {
+	    if (err) {
+		return console.error(err);
+	    }
 
-	emitter.emit("channels", "liveChannels", liveChannels);
-    });
+	    sendQueringRequest(channels, sockets);
+
+//	emitter.emit("channels", "channels", channels);
+	})
+    }, 1000);
 
     //console.log(channels);
 
@@ -105,7 +153,7 @@ function queryChannel(socket) {
 	sockets.push(value);
     });
 
-    emitter.on("channels", function(key, value) {
+/*    emitter.on("channels", function(key, value) {
 
 	setInterval(function(){
 
@@ -131,7 +179,7 @@ function queryChannel(socket) {
 		});
 	    });
 	},10000);
-    });
+    });*/
 }
 
 queryChannel();

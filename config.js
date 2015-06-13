@@ -1,48 +1,23 @@
 var config = {
     cns: "http://172.17.128.93/channel/cns/",
     trial: "http://192.168.56.3:8080/channel/trial/",
-    dongfong: "http://116.50.32.212:8080/channel/dongfong/",
+    dongfong: {
+        lms: "http://116.50.32.212:8080/channel/dongfong/",
+        mongodb: "mongodb://localhost:27017/monitor"
+    },
     port: 80,
-    channels: [
-	"1000000000000005",
-	"1000000000000007",
-	"1000000000000009",
-	"100000000000000c",
-	"100000000000000f",
-	"1000000000000012",
-	"1000000000000015",
-	"1000000000000018",
-	"100000000000001b",
-	"100000000000001e",
-	"1000000000000021",
-	"1000000000000024",
-	"1000000000000027",
-	"100000000000002a",
-	"100000000000002d",
-	"1000000000000030",
-	"1000000000000033",
-	"1000000000000036",
-	"1000000000000039",
-	"100000000000003c",
-	"100000000000003f",
-	"1000000000000042",
-	"1000000000000045",
-	"1000000000000048",
-	"100000000000004b",
-	"100000000000004e",
-	"1000000000000051",
-	"1000000000000054",
-	"100000000000006f",
-	"1000000000000072",
-	"1000000000000075",
-	"1000000000000078",
-	"100000000000007b",
-	"100000000000007e",
-	"1000000000000081",
-	"1000000000000084",
-	"1000000000000087",
-	"100000000000008a"
-    ]
+    config_log_dir: {
+        logDir: __dirname + "/"+ 'logs/api.log',
+        elogDir: __dirname + "/"+  'logs/excption.log',
+        commonLoggerFileName: __dirname + "/"+  'logs/monitor.log',
+        commonLoggerFileErrName: __dirname + "/"+  'logs/monitor_error.log',
+        accessLoggerFileName: __dirname + "/"+  'logs/monitor_access.log',
+        requestLoggerFileName: __dirname + "/"+  'logs/monitor_request.log',
+        responseLoggerFileName: __dirname + "/"+  'logs/monitor_response.log',
+        apiLoggerFileName: __dirname + "/"+  'logs/monitor_api.log',
+        performanceLoggerFileName: __dirname + "/"+   'logs/performance.log',
+        performanceErrLoggerFileErrName: __dirname + "/"+  'logs/performance_error.log'
+    }
 };
 
 exports.config = config;

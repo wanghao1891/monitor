@@ -11,14 +11,14 @@ if(! fs.existsSync(log_path)){
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.DailyRotateFile)({
-            filename: config.config_log_dir.commonLoggerFileName, level: 'info',
+            filename: config.log_dir.commonLoggerFileName, level: 'info',
             json: false,
             timestamp: function () {
                 return moment().format("YYYY-MM-DD HH:mm")
             }
         }),
         new (winston.transports.File)({
-            filename: config.config_log_dir.commonLoggerFileErrName, level: 'error',
+            filename: config.log_dir.commonLoggerFileErrName, level: 'error',
             json: false,
             maxSize:1024*1024*50,
             timestamp: function () {

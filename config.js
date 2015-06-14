@@ -6,7 +6,7 @@ var config = {
         mongodb: "mongodb://localhost:27017/monitor"
     },
     port: 80,
-    config_log_dir: {
+    log_dir: {
         logDir: __dirname + "/"+ 'logs/api.log',
         elogDir: __dirname + "/"+  'logs/excption.log',
         commonLoggerFileName: __dirname + "/"+  'logs/monitor.log',

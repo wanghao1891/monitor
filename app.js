@@ -9,6 +9,8 @@ var multer = require('multer');
 var mongoose = require('mongoose');
 var config = require("./config.js").config;
 var events = require("events");
+var routes = require('./routes.js');
+var ChannelModel = require('./models').ChannelModel;
 var emitter = new events.EventEmitter();
 var port = config.port;
 
@@ -16,18 +18,18 @@ var port = config.port;
 
 var operator = process.argv[2] || "trial";
 
-mongoose.connect('mongodb://localhost/monitor');
+//mongoose.connect('mongodb://localhost/monitor');
 
 //catch the error of connneting mongodb.
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+//var db = mongoose.connection;
+//db.on('error', console.error.bind(console, 'connection error:'));
 
-var Schema = mongoose.Schema;
-var liveChannelSchema = new Schema({
-    name: String,
-    bitrate: String
-});
-var LiveChannel = mongoose.model('LiveChannel', liveChannelSchema);
+//var Schema = mongoose.Schema;
+//var liveChannelSchema = new Schema({
+//    name: String,
+//    bitrate: String
+//});
+//var LiveChannel = mongoose.model('LiveChannel', liveChannelSchema);
 
 server.listen(port);
 
@@ -40,52 +42,54 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(multer()); // for parsing multipart/form-data
 
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+routes(app);
 
-app.get('/channels', function (req, res) {
-    //console.log("req", req);
-
-    LiveChannel.find(function (err, liveChannels) {
-	if (err) {
-	    return console.error(err);
-	}
-
-	res.send(liveChannels);
-    });
-
-//    res.send({message: 'hey'});
-});
-
-app.post('/channel', function (req, res) {
-//    console.log("req", req);
-//    console.log("res", res);
-    
-    console.log(req.body);
-
-    var channelName = req.body.name;
-    var bitrate = req.body.bitrate;
-    var url = "http://192.168.56.3:8080/channel/trial/" + channelName  + "/start?source=udp://" + bitrate  + ":864000&recording=no&record_d=/tmp"
-    console.log(url);
-
-    request(url, function (error, response, body) {
-	if (!error && response.statusCode == 200) {
-	    //		    console.log(body) // Show the HTML for the Google homepage.
-	    parseString(body, function (err, result) {
-		console.dir(result);
-	    });
-	}
-    });
-
-    var _channel = new LiveChannel(req.body);//{name:'001', bitrate:'227.0.0.1:10000'});
-    _channel.save(function (err) {
-	if (err) // ...
-	    console.log('meow');
-    });
-    console.log(typeof req.body);
-    res.send({ message: 'hey' });
-});
+//app.get('/', function (req, res) {
+//    res.sendFile(__dirname + '/index.html');
+//});
+//
+//app.get('/channels', function (req, res) {
+//    //console.log("req", req);
+//
+//    LiveChannel.find(function (err, liveChannels) {
+//	if (err) {
+//	    return console.error(err);
+//	}
+//
+//	res.send(liveChannels);
+//    });
+//
+////    res.send({message: 'hey'});
+//});
+//
+//app.post('/channel', function (req, res) {
+////    console.log("req", req);
+////    console.log("res", res);
+//    
+//    console.log(req.body);
+//
+//    var channelName = req.body.name;
+//    var bitrate = req.body.bitrate;
+//    var url = "http://192.168.56.3:8080/channel/trial/" + channelName  + "/start?source=udp://" + bitrate  + ":864000&recording=no&record_d=/tmp"
+//    console.log(url);
+//
+//    request(url, function (error, response, body) {
+//	if (!error && response.statusCode == 200) {
+//	    //		    console.log(body) // Show the HTML for the Google homepage.
+//	    parseString(body, function (err, result) {
+//		console.dir(result);
+//	    });
+//	}
+//    });
+//
+//    var _channel = new LiveChannel(req.body);//{name:'001', bitrate:'227.0.0.1:10000'});
+//    _channel.save(function (err) {
+//	if (err) // ...
+//	    console.log('meow');
+//    });
+//    console.log(typeof req.body);
+//    res.send({ message: 'hey' });
+//});
 
 function notifyClient(channel, sockets, status) {
     
@@ -134,7 +138,7 @@ function queryChannel(socket) {
     var sockets = [];
 
     setInterval(function(){
-	LiveChannel.find(function (err, channels) {
+	ChannelModel.find(function (err, channels) {
 	    if (err) {
 		return console.error(err);
 	    }
@@ -142,7 +146,7 @@ function queryChannel(socket) {
 	    sendQueringRequest(channels, sockets);
 
 //	emitter.emit("channels", "channels", channels);
-	})
+	});
     }, 1000);
 
     //console.log(channels);

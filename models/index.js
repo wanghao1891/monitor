@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var config = require('../config').config;
-var logger = require('../utils/logging');
+var logger = require('../common/utils').logger;
 
 var operator = process.argv[2] || "trial";
 
@@ -26,5 +26,13 @@ mongoose.connect(op_mongodb, options, function (err) {
         });
     } else {
         logger.info('connect to mongodb replicaset success');
+        init_db();
     }
 });
+
+// models
+function init_db() {
+    require('./channel');
+
+    exports.ChannelModel = mongoose.model('Channel');
+}

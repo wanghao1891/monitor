@@ -1,7 +1,7 @@
 function showAddLiveChannelDialog(event) {
 
     console.log(event);
-    
+
     var dialog = $("#add-live-channel-dialog");
 
     dialog.toggle();
@@ -13,7 +13,7 @@ function showAddLiveChannelDialog(event) {
 function showChannels(json) {
     console.log("json: " + json);
     var _list = "";
-    
+
     json.forEach(function(e){
 	_list += "<div id='"+ e.name + "' class='live-channel'>" + e.name + "</div>";
     });
@@ -26,32 +26,32 @@ function showChannels(json) {
 function getLiveChannels() {
     // Using the core $.ajax() method
     $.ajax({
-	
+
 	// The URL for the request
 	url: "/channels",
-	
+
 	// The data to send (will be converted to a query string)
 	data: {
             //name: $("#live-channel-name").val(),
 	    //bitrate: $("#live-channel-bitrate").val()
 	},
-	
+
 	// Whether this is a POST or GET request
 	type: "GET",
-	
+
 	// The type of data we expect back
 	dataType : "json",
-	
+
 	// Code to run if the request succeeds;
 	// the response is passed to the function
 	success: function( json ) {
-	    
+
 	    showChannels(json);
 
-//            $( "<h1>" ).text( json.title ).appendTo( "body" );
-//            $( "<div class=\"content\">").html( json.html ).appendTo( "body" );
+            //            $( "<h1>" ).text( json.title ).appendTo( "body" );
+            //            $( "<div class=\"content\">").html( json.html ).appendTo( "body" );
 	},
-	
+
 	// Code to run if the request fails; the raw request and
 	// status codes are passed to the function
 	error: function( xhr, status, errorThrown ) {
@@ -60,7 +60,7 @@ function getLiveChannels() {
             console.log( "Status: " + status );
             console.dir( xhr );
 	},
-	
+
 	// Code to run regardless of success or failure
 	complete: function( xhr, status ) {
             //alert( "The request is complete!" );
@@ -75,32 +75,32 @@ function addLiveChannelTmp() {
 function addLiveChannel() {
     // Using the core $.ajax() method
     $.ajax({
-	
+
 	// The URL for the request
 	url: "/channel",
-	
+
 	// The data to send (will be converted to a query string)
 	data: {
             name: $("#live-channel-name").val(),
 	    bitrate: $("#live-channel-bitrate").val()
 	},
-	
+
 	// Whether this is a POST or GET request
 	type: "POST",
-	
+
 	// The type of data we expect back
 	dataType : "json",
-	
+
 	// Code to run if the request succeeds;
 	// the response is passed to the function
 	success: function( json ) {
 	    console.log("json: " + json);
 
 	    getLiveChannels();
-//            $( "<h1>" ).text( json.title ).appendTo( "body" );
-//            $( "<div class=\"content\">").html( json.html ).appendTo( "body" );
+            //            $( "<h1>" ).text( json.title ).appendTo( "body" );
+            //            $( "<div class=\"content\">").html( json.html ).appendTo( "body" );
 	},
-	
+
 	// Code to run if the request fails; the raw request and
 	// status codes are passed to the function
 	error: function( xhr, status, errorThrown ) {
@@ -109,7 +109,7 @@ function addLiveChannel() {
             console.log( "Status: " + status );
             console.dir( xhr );
 	},
-	
+
 	// Code to run regardless of success or failure
 	complete: function( xhr, status ) {
             //alert( "The request is complete!" );
@@ -132,12 +132,12 @@ function connectSocketIO() {
 	var name = data.channel;
 	var status = data.status;
 
-//	if(status === "Good" && (name === "1000000000000051" || name === "1000000000000036")) {
-//	    status = "Bad";
-//	}
-	
+        //	if(status === "Good" && (name === "1000000000000051" || name === "1000000000000036")) {
+        //	    status = "Bad";
+        //	}
+
 	var color = "#2CB853";
-	
+
 	if(status === "Bad") {
 	    color = "#B82C41";
 	}

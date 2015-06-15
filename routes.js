@@ -2,9 +2,9 @@ var channel = require('./controllers/channel');
 
 module.exports = function(app) {
 
-    app.get('/', channel.getIndex);
+    app.get('/', channel.get_index);
 
-    app.get('/channels', channel.getChannels);
+    app.get('/channels', channel.get_channels);
 
-    app.post('/channel', channel.createChannel);
+    app.post('/channel', channel.create_channel);
 };

@@ -7,11 +7,6 @@ var model = require('../models/index');
 var ChannelModel = model.ChannelModel;
 var res_wrapper = utils.res_wrapper;
 
-//exports.get_index = function(req, res, next) {
-//
-//    res.sendFile(__dirname + '/../index.html');
-//};
-
 exports.get_channels = function(req, res, next) {
 
     ChannelModel.find(function (err, channels) {
@@ -38,12 +33,12 @@ exports.create_channel = function(req, res, next) {
             });
         }
     });
-    console.log(ChannelModel);
-    var _channel = new ChannelModel(req.body);//{name:'001', bitrate:'227.0.0.1:10000'});
+
+    var _channel = new ChannelModel(req.body);
     _channel.save(function (err) {
         if (err) // ...
             console.log('meow');
     });
-    console.log(typeof req.body);
+
     res.send({ message: 'hey' });
 };

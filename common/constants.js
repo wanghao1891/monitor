@@ -1,4 +1,4 @@
-var constants = {
+exports.constants = {
   SUCCESS_CODE: '000000',
   ERROR_CODE: {
     NO_USER: {
@@ -55,5 +55,3 @@ var constants = {
     others:2
   }
 };
-
-exports.constants = constants;

@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var config = require('../config').config;
 var logger = require('../common/utils').logger;
 
-var operator = process.argv[2] || "trial";
+var operator = config.operator || 'trial';
 
 var options = {
   replset: {

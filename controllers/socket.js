@@ -3,7 +3,6 @@ var emitter = new events.EventEmitter();
 var ChannelModel = require('../models').ChannelModel;
 var request = require('request');
 var parseString = require('xml2js').parseString;
-var operator = process.argv[2] || "trial";
 
 exports.socket_manager = socket_manager;
 
@@ -14,6 +13,7 @@ function socket_manager(io, config) {
 
   this.io = io;
   this.config = config;
+  this.operator = config.operator || 'trial';
   this.sockets = [];
 }
 
@@ -47,7 +47,7 @@ socket_manager.prototype.send_quering_request = function(channels) {
 
   channels.forEach(function(channel){
 
-    var url = self.config[operator].lms + channel.name + "/query";
+    var url = self.config[self.operator].lms + channel.name + "/query";
 
     console.log(self.send_quering_request, url);
     request(url, function (error, response, body) {

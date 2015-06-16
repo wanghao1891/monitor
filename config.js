@@ -1,6 +1,12 @@
 var config = {
-    cns: "http://172.17.128.93/channel/cns/",
-    trial: "http://192.168.56.3:8080/channel/trial/",
+    cns: {
+        lms: "http://172.17.128.93/channel/cns/",
+        mongodb: "mongodb://localhost:27017/monitor"
+    },
+    trial: {
+        lms: "http://192.168.56.3:8080/channel/trial/",
+        mongodb: "mongodb://localhost:27017/monitor"
+    },
     dongfong: {
         lms: "http://116.50.32.212:8080/channel/dongfong/",
         mongodb: "mongodb://localhost:27017/monitor"

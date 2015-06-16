@@ -8,4 +8,4 @@ var ChannelSchema = SchemaExt({
     read: 'secondary'
 });
 
-mongoose.mode('Channel', ChannelSchema);
+mongoose.model('Channel', ChannelSchema);

@@ -66,11 +66,11 @@ exports.res_wrapper = function (req, res, resText) {
             "status<|>" + (resText ? resText.status : '-') + '<|>msg<|>' + (resText ? resText.msg : '-')  + '<|>' +
             "time<|>" + (time||'-') + '<|>perf<|>' + (time >= 100 ? '100' : (time >= 50 ? '50' : '0')) + '<|>';
 
-    redisConn.publish("art_channel", logText, function(err,result){
-        if(err || 0 == result){
-            logger.info("REDIS FAIL "+result+' '+(err?err.toString():""));
-        }else logger.info("REDIS OK "+result);
-    });
+//    redisConn.publish("art_channel", logText, function(err,result){
+//        if(err || 0 == result){
+//            logger.info("REDIS FAIL "+result+' '+(err?err.toString():""));
+//        }else logger.info("REDIS OK "+result);
+//    });
 
     api_logger.info(logText);
 

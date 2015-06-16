@@ -26,13 +26,10 @@ mongoose.connect(op_mongodb, options, function (err) {
         });
     } else {
         logger.info('connect to mongodb replicaset success');
-        init_db();
     }
 });
 
 // models
-function init_db() {
-    require('./channel');
+require('./channel');
 
-    exports.ChannelModel = mongoose.model('Channel');
-}
+exports.ChannelModel = mongoose.model('Channel');

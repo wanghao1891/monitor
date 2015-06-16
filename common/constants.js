@@ -13,7 +13,7 @@ exports.constants = {
       status: 1,
       msg: '您不是老师，无法进行此操作'
     },
-        NO_TEACHER_VERIFY: {
+    NO_TEACHER_VERIFY: {
       status: 1,
       msg: '您的账户正在审核，无法进行此操作'
     },
@@ -37,7 +37,7 @@ exports.constants = {
       status: 1,
       msg: 'header不完整'
     },
-        AUTH_APPID: {
+    AUTH_APPID: {
       status: 1,
       msg: 'APPID无效'
     }

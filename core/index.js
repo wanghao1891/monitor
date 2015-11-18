@@ -34,5 +34,6 @@ Object.defineProperty(global, '__filename_', {
 });
 
 module.exports = {
-    logger: require('./logger')
+    logger: require('./logger'),
+    util: require('./util')
 };

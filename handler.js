@@ -1,11 +1,12 @@
 var core = require('./core');
+var util = core.util;
 
 function log_request(req, res, next) {
     req.context = {
-        oid: core.util.guid()
+        oid: util.guid()
     };
 
-    var now_date = core.util.get_now('YYYY-MM-DD HH:ss:mm');
+    var now_date = util.get_now('YYYY-MM-DD HH:ss:mm');
 
     var client = req.team_cookies;
     if (!client) {
@@ -49,6 +50,7 @@ function log_request(req, res, next) {
 };
 
 function error(error, req, res, next) {
+    console.log(error);
     return res.send({code: 500});
 };
 

@@ -10,7 +10,7 @@ exports = module.exports = function (app, config) {
     app.get('/error', controller.site_error);
     app.get('/not-found', controller.site_not_found);
 
-    if (config.env != "development") {
+    if (config.env != 'development') {
         app.get('*', permission.user.check_auth, controller.home.index);
     }
 

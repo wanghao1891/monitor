@@ -8,7 +8,7 @@ var config = {
   },
   modules: [
     'core',
-//    'user'
+    'user'
   ]
 };
 

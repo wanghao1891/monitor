@@ -27,7 +27,18 @@ var access_log_stream = FileStreamRotator.getStream({
   date_format: "YYYY-MM-DD"
 });
 
-var format = '{"remote_addr": ":remote-addr", "remote_user": ":remote-user", "date": ":date[clf]", "method": ":method", "url": ":url", "http_version": ":http-version", "status": ":status", "result_length": ":res[content-length]", "referrer": ":referrer", "user_agent": ":user-agent", "response_time": ":response-time"}';
+var format = '{"remote_addr": ":remote-addr", '
+      + '"remote_user": ":remote-user", '
+      + '"date": ":date[clf]", '
+      + '"method": ":method", '
+      + '"url": ":url", '
+      + '"http_version": '
+      + '":http-version", '
+      + '"status": ":status", '
+      + '"result_length": ":res[content-length]", '
+      + '"referrer": ":referrer", '
+      + '"user_agent": ":user-agent", '
+      + '"response_time": ":response-time"}';
 
 app.use(morgan(format, {stream: access_log_stream}));
 

@@ -11,7 +11,7 @@ var express = require('express'),
     package_json = require('./package.json'),
     config = require('./config'),
     lib = require('./lib'),
-    logger = lib.logger,
+    //logger = lib.logger,
     util = lib.util;
 
 var log_directory = __dirname + '/logs';
@@ -19,7 +19,7 @@ var log_directory = __dirname + '/logs';
 // ensure log directory exists
 fs.existsSync(log_directory) || fs.mkdirSync(log_directory);
 
-
+/*
 // create a rotating write stream
 var access_log_stream = FileStreamRotator.getStream({
   filename: log_directory + '/access-%DATE%.log',
@@ -58,9 +58,39 @@ function format(obj) {
     console.log(JSON.stringify(data, null, 4));
   };
 }
-
+*/
 // setup the logger
 //app.use(morgan('combined', {stream: access_log_stream}));
+
+var winston = require('winston');
+var logger = new winston.Logger({
+  transports: [
+    new winston.transports.File({
+      level:            'info',
+      filename:         './logs/all-logs.log',
+      handleExceptions: true,
+      json:             true,
+      maxsize:          5242880, //5MB
+      maxFiles:         5,
+      colorize:         false
+    }),
+    new winston.transports.Console({
+      level:            'debug',
+      handleExceptions: true,
+      json:             false,
+      colorize:         true
+    })
+  ],
+  exitOnError: false
+});
+
+logger.stream = {
+  write: function(message, encoding){
+    logger.info(message);
+  }
+};
+
+app.use(morgan('combined', { 'stream': logger.stream }));
 
 app.use(compression());
 

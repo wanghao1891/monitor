@@ -11,7 +11,7 @@ var express = require('express'),
     package_json = require('./package.json'),
     config = require('./config'),
     lib = require('./lib'),
-    //logger = lib.logger,
+    logger = lib.logger,
     util = lib.util;
 
 var log_directory = __dirname + '/logs';
@@ -19,7 +19,6 @@ var log_directory = __dirname + '/logs';
 // ensure log directory exists
 fs.existsSync(log_directory) || fs.mkdirSync(log_directory);
 
-/*
 // create a rotating write stream
 var access_log_stream = FileStreamRotator.getStream({
   filename: log_directory + '/access-%DATE%.log',
@@ -28,69 +27,9 @@ var access_log_stream = FileStreamRotator.getStream({
   date_format: "YYYY-MM-DD"
 });
 
-// Define your morgan logger to log JSON to your client
-// The object here takes your keys and strings that use
-// the morgan token format
-app.use(morgan(
-  format({
-  response_time: ':response-time',
-  remote_addr: ':remote-addr',
-  remote_user: ':remote-user',
-  status: ':status',
-  url: ':url'
-  // etc.; any non-standard tokens you would have to implement
-  }),
-  {stream: access_log_stream}
-));
+var format = '{"remote_addr": ":remote-addr", "remote_user": ":remote-user", "date": ":date[clf]", "method": ":method", "url": ":url", "http_version": ":http-version", "status": ":status", "result_length": ":res[content-length]", "referrer": ":referrer", "user_agent": ":user-agent", "response_time": ":response-time"}';
 
-function format(obj) {
-  var keys = Object.keys(obj);
-  var token = /^:([-\w]{2,})(?:\[([^\]]+)\])?$/;
-  return function (tokens, req, res) {
-    var data = {};
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      var val = token.exec(obj[key]);
-      data[key] = val !== null
-        ? tokens[val[1]](req, res, val[2])
-        : obj[key];
-    }
-    console.log(JSON.stringify(data, null, 4));
-  };
-}
-*/
-// setup the logger
-//app.use(morgan('combined', {stream: access_log_stream}));
-
-var winston = require('winston');
-var logger = new winston.Logger({
-  transports: [
-    new winston.transports.File({
-      level:            'info',
-      filename:         './logs/all-logs.log',
-      handleExceptions: true,
-      json:             true,
-      maxsize:          5242880, //5MB
-      maxFiles:         5,
-      colorize:         false
-    }),
-    new winston.transports.Console({
-      level:            'debug',
-      handleExceptions: true,
-      json:             false,
-      colorize:         true
-    })
-  ],
-  exitOnError: false
-});
-
-logger.stream = {
-  write: function(message, encoding){
-    logger.info(message);
-  }
-};
-
-app.use(morgan('combined', { 'stream': logger.stream }));
+app.use(morgan(format, {stream: access_log_stream}));
 
 app.use(compression());
 

@@ -9,7 +9,16 @@ var config = {
   modules: [
     'core',
     'user'
-  ]
+  ],
+  db: {
+    uri: 'mongodb://localhost/monitor',
+    options: {
+      user: '',
+      pass: ''
+    },
+    // Enable mongoose debug mode
+    debug: process.env.MONGODB_DEBUG || false
+  }
 };
 
 if (process.argv.length >= 3 && process.argv[2].toLowerCase() == "live") {

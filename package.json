@@ -26,6 +26,7 @@
     "express": "^4.13.3",
     "file-stream-rotator": "0.0.6",
     "moment": "^2.10.6",
+    "mongoose": "^4.2.6",
     "morgan": "^1.6.1",
     "node-uuid": "^1.4.7",
     "winston": "^2.1.0"

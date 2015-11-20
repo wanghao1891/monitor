@@ -12,7 +12,8 @@ var express = require('express'),
     config = require('./config'),
     lib = require('./lib'),
     logger = lib.logger,
-    util = lib.util;
+    util = lib.util,
+    db = lib.db;
 
 var log_directory = __dirname + '/logs';
 
@@ -74,6 +75,9 @@ var context = {
 };
 
 route(context);
+
+//connect database
+db.connect();
 
 if (config.env !== "test") {
   app.set('port', process.env.PORT || 8100);

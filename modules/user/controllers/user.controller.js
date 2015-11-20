@@ -1,3 +1,5 @@
+var user = require('../models/user.model');
+
 var env = {
   init: init,
   signup: signup,
@@ -16,7 +18,21 @@ function signup(req, res, next) {
 
   logger.debug('username:', username, 'password:', password);
 
-  res.send('Ok!');
+  user.create_user({
+    username: username,
+    password: password
+  }, function(err) {
+    if(err) {
+      logger.error(err);
+      res.send({
+        state: 500
+      });
+    } else {
+      res.send({
+        state: 200
+      });
+    }
+  });
 }
 
 module.exports = env;

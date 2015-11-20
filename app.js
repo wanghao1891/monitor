@@ -87,6 +87,7 @@ if (config.env !== "test") {
     logger.info('Server listening on port', app.get('port'));
   });
 }
+
 if (config.env === 'production') {
   process.on("uncaughtException", function (err) {
     setTimeout(function () {

@@ -20,13 +20,14 @@ var UserSchema = new Schema({
   },
   email: {
     type: String,
-    unique: true,
+    unique: false,
     lowercase: true,
     trim: true
   },
   username: {
     type: String,
-    unique: 'Username already exists',
+    unique: false,
+    //unique: 'Username already exists',
     required: 'Please fill in a username',
     lowercase: true,
     trim: true
@@ -39,7 +40,7 @@ var UserSchema = new Schema({
     type: String
   },
   created: {
-    type: Date,
+    type: Number,
     default: Date.now
   },
   updated: {
@@ -47,16 +48,18 @@ var UserSchema = new Schema({
   }
 });
 
-var User = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
 
+/*
 function create(data, callback) {
   var user = new User(data);
 
-  user.save(function(err) {
-    callback(err);
-  });
+  user.save(function(err, result) {
+    callback(err, result);
+   });
 }
 
 module.exports = {
   create: create
 };
+*/

@@ -18,6 +18,10 @@ var config = {
     },
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
+  },
+  cache: {
+    uri: 'redis://127.0.0.1:6379',
+    options: {}
   }
 };
 

@@ -13,7 +13,8 @@ var express = require('express'),
     lib = require('./lib'),
     logger = lib.logger,
     util = lib.util,
-    db = lib.db;
+    db = lib.db,
+    cache = lib.cache;
 
 var log_directory = __dirname + '/logs';
 
@@ -65,13 +66,14 @@ app.enable('trust proxy');
 
 config.version = package_json.version;
 app.locals.config = config;
-app.logger = logger;
 
 var context = {
   app: app,
   config: config,
   logger: logger,
-  util: util
+  util: util,
+  cache: cache,
+  db: db
 };
 
 route(context);

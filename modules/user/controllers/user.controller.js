@@ -1,4 +1,4 @@
-var user = require('../models/user.model');
+var User = require('../models/user.model');
 
 var env = {
   init: init,
@@ -11,31 +11,51 @@ function init(context) {
 }
 
 function signup(req, res, next) {
-  var logger = env.context.logger;
-  var util = env.context.util;
+  var context = env.context,
+      logger = context.logger,
+      util = context.util,
+      cache = context.cache,
+      db = context.db;
 
-  var username = req.body.username;
-  var password = req.body.password;
+  var body = req.body,
+      username = body.username,
+      password = body.password,
+      email = body.email;
 
-  logger.debug('username:', username, 'password:', password);
+  logger.debug('username:', username, 'password:', password, 'cache:', cache);
 
   var salt = util.get_uuid();
 
   password = util.encrypt(salt, password);
 
-  user.create({
+  var data = {
     username: username,
     password: password,
-    salt: salt
-  }, function(err) {
+    salt: salt,
+    email: email
+  };
+  db.create(User, data, function(err, result) {
     if(err) {
       logger.error(err);
       res.send({
-        state: 500
+        code: 500
       });
     } else {
-      res.send({
-        state: 200
+      var sid = util.get_uuid();
+
+      var client_cache = cache.get_client();
+      logger.debug('sid:', sid);
+      client_cache.set(sid, JSON.stringify(result), function(err) {
+        if(err) {
+          logger.error(err);
+          res.send({
+            code: 500
+          });
+        } else {
+          res.send({
+            code: 200
+          });
+        }
       });
     }
   });

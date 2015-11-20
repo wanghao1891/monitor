@@ -49,14 +49,8 @@ var UserSchema = new Schema({
 
 var User = mongoose.model('User', UserSchema);
 
-function create_user(info, callback) {
-  var username = info.username;
-  var password = info.password;
-
-  var user = new User({
-    username: username,
-    password: password
-  });
+function create(data, callback) {
+  var user = new User(data);
 
   user.save(function(err) {
     callback(err);
@@ -64,5 +58,5 @@ function create_user(info, callback) {
 }
 
 module.exports = {
-  create_user: create_user
+  create: create
 };

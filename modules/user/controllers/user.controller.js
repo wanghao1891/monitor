@@ -11,16 +11,22 @@ function init(context) {
 }
 
 function signup(req, res, next) {
+  var logger = env.context.logger;
+  var util = env.context.util;
+
   var username = req.body.username;
   var password = req.body.password;
 
-  var logger = env.context.logger;
-
   logger.debug('username:', username, 'password:', password);
 
-  user.create_user({
+  var salt = util.get_uuid();
+
+  password = util.encrypt(salt, password);
+
+  user.create({
     username: username,
-    password: password
+    password: password,
+    salt: salt
   }, function(err) {
     if(err) {
       logger.error(err);

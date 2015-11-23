@@ -81,14 +81,6 @@ function signup(req, res, next) {
 
   env.logger.debug('username:', username, 'password:', password);
 
-  /* var salt = env.util.get_uuid();
-  password = env.util.encrypt(salt, password);
-  var data = {
-    username: username,
-    password: password,
-    salt: salt,
-    email: email
-   };*/
   var tasks = [
     create_user(body),
     save_session(),
@@ -104,33 +96,6 @@ function signup(req, res, next) {
       });
     }
   });
-
-  /*env.db.create(User, data, function(err, result) {
-    if(err) {
-      env.logger.error(err);
-      return res.send({
-        code: 500
-      });
-    }*/
-
-    /*var sid = env.util.get_uuid();
-    var client_cache = env.cache.get_client();
-    return client_cache.set(sid, JSON.stringify(result), function(err) {
-      if(err) {
-        env.logger.error(err);
-        res.send({
-          code: 500
-        });
-      } else {
-        env.logger.debug('sid:', sid);
-        res.send({
-          code: 200
-        });
-      }
-     });*/
-
-    //return save_session(JSON.stringify(result));
-  //});
 }
 
 function signin(req, res, next) {

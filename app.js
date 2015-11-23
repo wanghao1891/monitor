@@ -82,7 +82,7 @@ route(context);
 db.connect();
 
 if (config.env !== "test") {
-  app.set('port', process.env.PORT || 8100);
+  app.set('port', process.env.PORT || 6006);
   app.listen(app.get('port'), '0.0.0.0', function () {
     logger.info('Server listening on port', app.get('port'));
   });

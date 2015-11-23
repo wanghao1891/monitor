@@ -49,17 +49,3 @@ var UserSchema = new Schema({
 });
 
 module.exports = mongoose.model('User', UserSchema);
-
-/*
-function create(data, callback) {
-  var user = new User(data);
-
-  user.save(function(err, result) {
-    callback(err, result);
-   });
-}
-
-module.exports = {
-  create: create
-};
-*/

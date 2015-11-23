@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/wanghao1891/monitor#readme",
   "dependencies": {
+    "async": "^1.5.0",
     "body-parser": "^1.14.1",
     "compression": "^1.6.0",
     "cookie-parser": "^1.4.0",

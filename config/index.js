@@ -22,6 +22,10 @@ var config = {
   cache: {
     uri: 'redis://127.0.0.1:6379',
     options: {}
+  },
+  domain: 'localhost',
+  status: {
+    ok: 200
   }
 };
 

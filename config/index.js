@@ -25,7 +25,9 @@ var config = {
   },
   domain: 'localhost',
   status: {
-    ok: 200
+    ok: 200,
+    invalid_input: 401,
+    not_found: 404
   }
 };
 

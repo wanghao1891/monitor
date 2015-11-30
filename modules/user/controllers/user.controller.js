@@ -1,5 +1,7 @@
 var User = require('../models/user.model');
 var async = require('async');
+var user_config = require('../config');
+var _ = require('lodash');
 
 var env = {
   init: init,
@@ -98,8 +100,48 @@ function signup(req, res, next) {
   });
 }
 
-function signin(req, res, next) {
+function get_user(name, callback) {
+  var query = {
+    //is_deleted: false
+  };
 
+  if(name.match(user_config.user.name_regex)) {
+    query.username = name.toLowerCase();
+  } else {
+    query.email = name.toLowerCase();
+  }
+
+  env.db.read(query, callback);
+}
+
+function signin(req, res, next) {
+  var body = req.body;
+      password = body.password,
+
+  if(_.isEmpty(body)) {
+    return res.send({
+      code: env.config.status.invalid_input
+    });
+  }
+
+  var name = body.name;
+  if(!name.match(user_config.user.name_regex)
+     && !name.match(user_config.user.email_regex)) {
+    return res.send({
+      code: env.config.status.invalid_input
+    });
+  }
+
+  var password = body.password;
+  if(_.isEmpty(password)) {
+    return res.send({
+      code: env.config.status.invalid_input
+    });
+  }
+
+  get_user(name, function(err, user) {
+    console.log(user);
+  });
 }
 
 module.exports = env;

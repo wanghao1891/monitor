@@ -5,4 +5,5 @@ module.exports = function(context) {
   var app = context.app;
 
   app.post('/api/auth/signup', user_controller.signup);
+  app.post('/api/auth/signin', user_controller.signin);
 };

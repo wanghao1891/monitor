@@ -6,6 +6,7 @@ var _ = require('lodash');
 var env = {
   init: init,
   signup: signup,
+  signin: signin,
   logger: null,
   util: null,
   cache: null,
@@ -111,12 +112,11 @@ function get_user(name, callback) {
     query.email = name.toLowerCase();
   }
 
-  env.db.read(query, callback);
+  env.db.read(User, query, callback);
 }
 
 function signin(req, res, next) {
   var body = req.body;
-      password = body.password,
 
   if(_.isEmpty(body)) {
     return res.send({

@@ -115,6 +115,30 @@ function get_user(name, callback) {
   env.db.read(User, query, callback);
 }
 
+function get_user(name, callback) {
+  return function(callback) {
+    var query = {
+      //is_deleted: false
+    };
+
+    if(name.match(user_config.user.name_regex)) {
+      query.username = name.toLowerCase();
+    } else {
+      query.email = name.toLowerCase();
+    }
+
+    env.db.read(User, query, function(err, user) {
+      if(err) {
+        callback(err);
+      } else if(!user) {
+        callback('no user');
+      } else {
+        callback(null, user);
+      }
+    });
+  };
+}
+
 function signin(req, res, next) {
   var body = req.body;
 
@@ -139,8 +163,20 @@ function signin(req, res, next) {
     });
   }
 
-  get_user(name, function(err, user) {
-    console.log(user);
+  var tasks = [
+    get_user(name),
+    save_session(),
+    set_cookie(res)
+  ];
+
+  return async.waterfall(tasks, function(err) {
+    if(err) {
+      next(err);
+    } else {
+      res.send({
+        code: env.config.status.ok
+      });
+    }
   });
 }
 

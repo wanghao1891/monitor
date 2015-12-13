@@ -6,9 +6,9 @@ module.exports = function(context) {
     res.send('Home page');
   });
 
-  if (config.env != 'development') {
+  /*if(config.env != 'development') {
     app.get('*', function(req, res, next) {
       res.send('Welcome!');
     });
-  }
+  }*/
 };

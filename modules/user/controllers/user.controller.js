@@ -7,6 +7,8 @@ var env = {
   init: init,
   signup: signup,
   signin: signin,
+  authenticate: authenticate,
+  signout: signout,
   logger: null,
   util: null,
   cache: null,
@@ -178,6 +180,101 @@ function signin(req, res, next) {
       });
     }
   });
+}
+
+function check_mobile(req, callback) {
+
+}
+
+function get_session(sid, callback) {
+  var client_cache = env.cache.get_client();
+  return client_cache.get(sid, callback);
+}
+
+function check_web(req, callback) {
+  var err_info;
+
+  var cookies = req.cookies;
+  if(!cookies) {
+    err_info = 'no cookie';
+    env.logger.error(err_info);
+    return callback(err_info);
+  }
+
+  var sid = cookies.sid;
+
+  if(!sid) {
+    err_info = 'no session id';
+    env.logger.error(err_info);
+    return callback(err_info);
+  }
+
+  return get_session(sid, function(err, session) {
+    if(err) {
+      env.logger.error(err);
+      return callback(err);
+    }
+
+    if(!session) {
+      err_info = 'signout failed, can not found user.';
+      env.logger.error(err_info);
+      return callback(err_info);
+    }
+
+    return callback(null, {
+      session: session
+    });
+  });
+}
+
+function check_client(req, callback) {
+  var err_info = null;
+
+  var headers = req.headers;
+  if(!headers) {
+    err_info = 'no headers';
+    env.logger.error(err_info);
+    return callback(err_info);
+  }
+
+  var app_key = headers[user_config.auth.app_key];
+
+  if (app_key) {//mobile phone
+    return check_mobile({
+      app_key: app_key,
+      req: req
+    }, callback);
+  } else {//web
+    return check_web(req, callback);
+  }
+}
+
+function authenticate(req, res, next) {
+  var err_info;
+
+  if(!req) {
+    err_info = 'no req';
+    env.logger.error(err_info);
+    return next(new Error(err_info));
+  }
+
+  return check_client(req, function(err, result) {
+    if(err) {
+      return next(new Error(err));
+    }
+
+    req.session = result.session;
+
+    env.logger.debug('session:', result.session);
+
+    return next();
+  });
+}
+
+function signout(req, res, next) {
+  var body = req.body;
+
+  res.send('ok');
 }
 
 module.exports = env;

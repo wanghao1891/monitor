@@ -65,6 +65,21 @@ function save_session() {
   };
 }
 
+function delete_session(sid) {
+  return function(callback) {
+    var client_cache = env.cache.get_client();
+    return client_cache.del(sid, function(err) {
+      if(err) {
+        env.logger.error(err);
+        return callback(err);
+      } else {
+        env.logger.debug('sid:', sid);
+        return callback(null);
+      }
+    });
+  };
+}
+
 function set_cookie(res) {
   return function(sid, callback) {
     res.cookie('sid', sid, {
@@ -73,6 +88,14 @@ function set_cookie(res) {
       domain  : env.config.domain,
       path    : '/'
     });
+
+    callback(null);
+  };
+}
+
+function clear_cookie(sid, res) {
+  return function(callback) {
+    res.clearCookie('sid', sid);
 
     callback(null);
   };
@@ -272,9 +295,22 @@ function authenticate(req, res, next) {
 }
 
 function signout(req, res, next) {
-  var body = req.body;
+  var sid = req.cookies.sid;
 
-  res.send('ok');
+  var tasks = [
+    delete_session(sid),
+    clear_cookie(sid, res)
+  ];
+
+  return async.waterfall(tasks, function(err) {
+    if(err) {
+      next(err);
+    } else {
+      res.send({
+        code: env.config.status.ok
+      });
+    }
+  });
 }
 
 module.exports = env;

@@ -4,9 +4,11 @@ module.exports = function(context) {
 
   var app = context.app;
 
+  app.post(/[^\/api\/auth\/signup|\/api\/auth\/signin]/, user_controller.authenticate);
+
   app.post('/api/auth/signup', user_controller.signup);
   app.post('/api/auth/signin', user_controller.signin);
-  app.post('/api/auth/signout', user_controller.authenticate, user_controller.signout);
+  app.post('/api/auth/signout', user_controller.signout);
   app.get('/cookie/:action/:sid', function(req, res, next) {
     var action = req.params.action;
     var sid = req.params.sid;

@@ -8,7 +8,8 @@ var config = {
   },
   modules: [
     'core',
-    'user'
+    'user',
+    'food'
   ],
   db: {
     uri: 'mongodb://localhost/monitor',

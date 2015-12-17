@@ -102,10 +102,10 @@ function clear_cookie(sid, res) {
 }
 
 function signup(req, res, next) {
-  var body = req.body,
-      username = body.username,
-      password = body.password,
-      email = body.email;
+  var body = req.body;
+  var username = body.username;
+  var password = body.password;
+  var email = body.email;
 
   env.logger.debug('username:', username, 'password:', password);
 

@@ -3,6 +3,7 @@ var Food = require('../models/food.model');
 var env = {
   init: init,
   create: create,
+  read_more: read_more,
   logger: null,
   util: null,
   cache: null,
@@ -21,6 +22,7 @@ function init(context) {
 function create(req, res, next) {
   var body = req.body;
   var data = {
+    uid: req.session._id,
     name: body.name,
     type: body.type,
     location: body.location
@@ -33,6 +35,22 @@ function create(req, res, next) {
 
     return res.send({
       code: env.config.status.ok
+    });
+  });
+}
+
+function read_more(req, res, next) {
+  var query = {
+    uid: req.session._id
+  };
+
+  env.db.read_more(Food, query, function(err, foods) {
+    if(err) {
+      return next(err);
+    }
+
+    return res.send({
+      data: foods
     });
   });
 }

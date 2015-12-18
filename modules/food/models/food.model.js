@@ -4,6 +4,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var FoodSchema = new Schema({
+  uid: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   name: {
     type: String,
     trim: true,

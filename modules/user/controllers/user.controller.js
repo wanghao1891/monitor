@@ -127,20 +127,6 @@ function signup(req, res, next) {
 }
 
 function get_user(name, callback) {
-  var query = {
-    //is_deleted: false
-  };
-
-  if(name.match(user_config.user.name_regex)) {
-    query.username = name.toLowerCase();
-  } else {
-    query.email = name.toLowerCase();
-  }
-
-  env.db.read(User, query, callback);
-}
-
-function get_user(name, callback) {
   return function(callback) {
     var query = {
       //is_deleted: false
@@ -152,7 +138,7 @@ function get_user(name, callback) {
       query.email = name.toLowerCase();
     }
 
-    env.db.read(User, query, function(err, user) {
+    env.db.read_one(User, query, function(err, user) {
       if(err) {
         callback(err);
       } else if(!user) {
@@ -211,7 +197,15 @@ function check_mobile(req, callback) {
 
 function get_session(sid, callback) {
   var client_cache = env.cache.get_client();
-  return client_cache.get(sid, callback);
+  client_cache.get(sid, function(err, session) {
+    if(err) {
+      return callback(err);
+    } else if(session) {
+      return callback(null, JSON.parse(session));
+    } else {
+      return callback('no session');
+    }
+  });
 }
 
 function check_web(req, callback) {

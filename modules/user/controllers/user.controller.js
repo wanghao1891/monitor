@@ -89,7 +89,7 @@ function set_cookie(res) {
       path    : '/'
     });
 
-    callback(null);
+    callback(null, sid);
   };
 }
 
@@ -180,12 +180,13 @@ function signin(req, res, next) {
     set_cookie(res)
   ];
 
-  return async.waterfall(tasks, function(err) {
+  return async.waterfall(tasks, function(err, sid) {
     if(err) {
       next(err);
     } else {
       res.send({
-        code: env.config.status.ok
+        code: env.config.status.ok,
+        sid: sid
       });
     }
   });

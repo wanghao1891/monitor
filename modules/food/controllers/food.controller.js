@@ -21,13 +21,16 @@ function init(context) {
 
 function create(req, res, next) {
   var body = req.body;
-  var data = {
-    uid: req.session._id,
-    name: body.name,
-    type: body.type,
-    location: body.location
-  };
+//  var data = {
+//    uid: req.session._id,
+//    name: body.name,
+//    type: body.type,
+//    location: body.location
+//  };
 
+  var data = req.body;
+  data.uid = req.session._id;
+  //console.log('data:', data);
   env.db.create(Food, data, function(err, food) {
     if(err) {
       return next(err);

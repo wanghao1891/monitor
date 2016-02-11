@@ -20,7 +20,7 @@ var UserSchema = new Schema({
   },
   email: {
     type: String,
-    unique: false,
+    //unique: false,
     lowercase: true,
     trim: true
   },
@@ -28,7 +28,7 @@ var UserSchema = new Schema({
     type: String,
     unique: false,
     //unique: 'Username already exists',
-    required: 'Please fill in a username',
+    //required: 'Please fill in a username',
     lowercase: true,
     trim: true
   },
@@ -44,7 +44,8 @@ var UserSchema = new Schema({
     default: Date.now
   },
   updated: {
-    type: Date
+    type: Number,
+    default: Date.now
   }
 });
 

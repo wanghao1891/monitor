@@ -115,12 +115,13 @@ function signup(req, res, next) {
     set_cookie(res)
   ];
 
-  async.waterfall(tasks, function(err) {
+  async.waterfall(tasks, function(err, sid) {
     if(err) {
       next(err);
     } else {
       res.send({
-        code: env.config.status.ok
+        code: env.config.status.ok,
+        sid: sid
       });
     }
   });
@@ -213,13 +214,13 @@ function check_web(req, callback) {
   var err_info;
 
   var cookies = req.cookies;
-  if(!cookies) {
-    err_info = 'no cookie';
-    env.logger.error(err_info);
-    return callback(err_info);
-  }
+//  if(!cookies) {
+//    err_info = 'no cookie';
+//    env.logger.error(err_info);
+//    return callback(err_info);
+//  }
 
-  var sid = cookies.sid;
+  var sid = cookies.sid || req.headers.sid;
 
   if(!sid) {
     err_info = 'no session id';

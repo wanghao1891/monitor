@@ -29,6 +29,9 @@ var FoodSchema = new Schema({
     trim: true,
     default: ''
   },
+  manufacture_date: {
+    type: Number
+  },
   purchase_date: {
     type: Number
   },
@@ -40,7 +43,8 @@ var FoodSchema = new Schema({
     default: Date.now
   },
   updated: {
-    type: Number
+    type: Number,
+    default: Date.now
   }
 });
 

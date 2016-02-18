@@ -127,8 +127,15 @@ function signup(req, res, next) {
   });
 }
 
-function get_user(name, callback) {
+//data: {
+//  name: '',
+//  password: ''
+//}
+function get_user(data, callback) {
   return function(callback) {
+    var name = data.name;
+    var password = data.password;
+
     var query = {
       //is_deleted: false
     };
@@ -145,7 +152,16 @@ function get_user(name, callback) {
       } else if(!user) {
         callback('no user');
       } else {
-        callback(null, user);
+        var password_request = env.util.encrypt(user.salt, password);
+        env.logger.debug('request passowrd:', password_request);
+        env.logger.debug('real passowrd:', user.password);
+        if(password_request === user.password) {
+          callback(null, user);
+        } else {
+          callback({
+            code: env.config.status.username_password_error
+          });
+        }
       }
     });
   };
@@ -175,8 +191,13 @@ function signin(req, res, next) {
     });
   }
 
+  var user_info = {
+    name: name,
+    password: password
+  };
+
   var tasks = [
-    get_user(name),
+    get_user(user_info),
     save_session(),
     set_cookie(res)
   ];

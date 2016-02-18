@@ -28,7 +28,8 @@ var config = {
   status: {
     ok: 200,
     invalid_input: 401,
-    not_found: 404
+    not_found: 404,
+    username_password_error: 1000
   }
 };
 

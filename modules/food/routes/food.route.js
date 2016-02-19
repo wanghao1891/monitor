@@ -4,7 +4,7 @@ module.exports = function(context) {
 
   var app = context.app;
 
-  app.route('/api/food')
+  app.route('/api/food/:type?/:time?')
     .post(food_controller.create)
     .get(food_controller.read_more);
 };

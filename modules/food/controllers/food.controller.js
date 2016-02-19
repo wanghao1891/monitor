@@ -43,11 +43,37 @@ function create(req, res, next) {
 }
 
 function read_more(req, res, next) {
-  var query = {
-    uid: req.session._id
+  var data = {
+    model: Food,
+    query: {
+      uid: req.session._id
+    },
+    fields: '',
+    options: {
+      sort: {
+        updated: -1
+      }
+    }
   };
 
-  env.db.read_more(Food, query, function(err, foods) {
+  var type = req.params.type;
+
+  switch(type) {
+  case 'expiring':
+    var time = req.params.time || 60 * 60 * 24 * 1000;
+    data.query.expiration_date = {
+      $lte: new Date().getTime() + time,
+      $gte: new Date().getTime()
+    };
+    break;
+  case 'expired':
+    data.query.expiration_date = {
+      $lt: new Date().getTime()
+    };
+    break;
+  }
+  env.logger.debug('data:', data);
+  env.db.read_more(data, function(err, foods) {
     if(err) {
       return next(err);
     }

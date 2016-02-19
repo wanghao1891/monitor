@@ -57,21 +57,29 @@ function read_more(req, res, next) {
   };
 
   var type = req.params.type;
+  var time = req.params.time || 60 * 60 * 24 * 1000;
 
   switch(type) {
   case 'expiring':
-    var time = req.params.time || 60 * 60 * 24 * 1000;
     data.query.expiration_date = {
       $lte: new Date().getTime() + time,
-      $gte: new Date().getTime()
+      $gt: new Date().getTime()
     };
     break;
+
   case 'expired':
     data.query.expiration_date = {
-      $lt: new Date().getTime()
+      $lte: new Date().getTime()
+    };
+    break;
+
+  case 'normal':
+    data.query.expiration_date = {
+      $gt: new Date().getTime() + time
     };
     break;
   }
+
   env.logger.debug('data:', data);
   env.db.read_more(data, function(err, foods) {
     if(err) {

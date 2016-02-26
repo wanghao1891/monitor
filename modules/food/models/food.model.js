@@ -38,6 +38,10 @@ var FoodSchema = new Schema({
   expiration_date: {
     type: Number
   },
+  status: {
+    type: Number,
+    default: 1 //0, deleted; 1, ok
+  },
   created: {
     type: Number,
     default: Date.now

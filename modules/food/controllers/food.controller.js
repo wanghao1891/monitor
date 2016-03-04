@@ -86,7 +86,12 @@ function read_more(req, res, next) {
     break;
   }
 
-  env.logger.debug('data:', data);
+  env.logger.debug('data:',
+                   JSON.stringify({
+                     query: data.query,
+                     field: data.field,
+                     options: data.options}, null, 2)
+                  );
   env.db.read_more(data, function(err, foods) {
     if(err) {
       return next(err);
@@ -147,7 +152,12 @@ function delete_more(req, res, next) {
     }
   };
 
-  env.logger.debug('data:', JSON.stringify(data, null, 2));
+  env.logger.debug('data:',
+                   JSON.stringify({
+                     query: data.query,
+                     field: data.field,
+                     options: data.options}, null, 2)
+                  );
   env.db.delete_one(data, function(err) {
     if(err) {
       next(err);

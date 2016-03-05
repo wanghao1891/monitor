@@ -20,14 +20,14 @@ var FoodSchema = new Schema({
     default: ''
   },
   category: {
-    type: String,
-    trim: true,
-    default: ''
+    type: String
+//    trim: true,
+//    default: ''
   },
   location: {
-    type: String,
-    trim: true,
-    default: ''
+    type: String
+//    trim: true,
+//    default: ''
   },
   manufacture_date: {
     type: Number

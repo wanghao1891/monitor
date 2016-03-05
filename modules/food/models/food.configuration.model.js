@@ -26,4 +26,4 @@ var FoodConfigurationSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('FoodConfiguration', FoodConfigurationSchema);
+module.exports = mongoose.model('food_configuration', FoodConfigurationSchema);

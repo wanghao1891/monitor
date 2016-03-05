@@ -52,4 +52,4 @@ var FoodSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Food', FoodSchema);
+module.exports = mongoose.model('food', FoodSchema);

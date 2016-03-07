@@ -21,7 +21,7 @@ function init(context) {
 
 function create(req, res, next) {
   var data = req.body;
-  data.user = req.session._id;
+  data.uid = req.session._id;
   //console.log('data:', data);
   env.db.create(FoodConfiguration, data, function(err, food) {
     if(err) {
@@ -38,7 +38,7 @@ function read_more(req, res, next) {
   var data = {
     model: FoodConfiguration,
     query: {
-      user: req.session._id
+      uid: req.session._id
     },
     fields: 'name type',
     options: {

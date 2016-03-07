@@ -4,6 +4,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var FoodConfigurationSchema = new Schema({
+  uid: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   name: {
     type: String,
     trim: true,
@@ -11,10 +16,6 @@ var FoodConfigurationSchema = new Schema({
   },
   type: {
     type: String
-  },
-  user: {
-    type: String,
-    default: []
   },
   created: {
     type: Number,

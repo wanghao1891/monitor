@@ -17,6 +17,10 @@ var FoodConfigurationSchema = new Schema({
   type: {
     type: String
   },
+  status: {
+    type: Number,
+    default: 1 //0, deleted; 1, ok
+  },
   created: {
     type: Number,
     default: Date.now

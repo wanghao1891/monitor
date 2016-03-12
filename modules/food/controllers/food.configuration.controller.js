@@ -4,6 +4,9 @@ var env = {
   init: init,
   create: create,
   read_more: read_more,
+  delete_one: delete_one,
+  update_one: update_one,
+  delete_more: delete_more,
   logger: null,
   util: null,
   cache: null,
@@ -38,7 +41,10 @@ function read_more(req, res, next) {
   var data = {
     model: FoodConfiguration,
     query: {
-      uid: req.session._id
+      uid: req.session._id,
+      status: {
+        $ne: 0
+      }
     },
     fields: 'name type',
     options: {
@@ -73,6 +79,72 @@ function read_more(req, res, next) {
     return res.send({
       data: docs
     });
+  });
+}
+
+function delete_one(req, res, next) {
+  var data = {
+    model: FoodConfiguration,
+    query: {
+      _id: req.params.id
+    }
+  };
+
+  env.db.delete_one(data, function(err) {
+    if(err) {
+      next(err);
+    } else {
+      res.send({
+        code: 200
+      });
+    }
+  });
+}
+
+function update_one(req, res, next) {
+  var data = {
+    model: FoodConfiguration,
+    query: {
+      _id: req.params.id
+    },
+    setter: req.body
+  };
+
+  env.db.update_one(data, function(err) {
+    if(err) {
+      next(err);
+    } else {
+      res.send({
+        code: 200
+      });
+    }
+  });
+}
+
+function delete_more(req, res, next) {
+  var data = {
+    model: FoodConfiguration,
+    query: {
+      _id: {
+        $in: req.body.id_list
+      }
+    }
+  };
+
+  env.logger.debug('data:',
+                   JSON.stringify({
+                     query: data.query,
+                     field: data.field,
+                     options: data.options}, null, 2)
+                  );
+  env.db.delete_one(data, function(err) {
+    if(err) {
+      next(err);
+    } else {
+      res.send({
+        code: 200
+      });
+    }
   });
 }
 

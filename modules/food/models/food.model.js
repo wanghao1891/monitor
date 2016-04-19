@@ -38,6 +38,9 @@ var FoodSchema = new Schema({
   expiration_date: {
     type: Number
   },
+  allergy: {
+    type: Number //0, no; 1, yes; 2, uncertain
+  },
   status: {
     type: Number,
     default: 1 //0, deleted; 1, ok
